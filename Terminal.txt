@@ -1,0 +1,147 @@
+(base) @MVFran ➜ /workspaces/biotaller2025 (main) $ ll
+total 48
+drwxrwxrwx+ 6 vscode root 4096 Apr 10 19:09 ./
+drwxr-xrwx+ 4 vscode root 4096 Apr 10 19:09 ../
+drwxrwxrwx+ 2 vscode root 4096 Apr 10 19:09 assets/
+drwxrwxrwx+ 2 vscode root 4096 Apr 10 19:09 .devcontainer/
+-rw-rw-rw-  1 vscode root  598 Apr 10 19:09 env.yml
+drwxrwxrwx+ 8 vscode root 4096 Apr 10 19:12 .git/
+-rw-rw-rw-  1 vscode root    6 Apr 10 19:09 .gitignore
+-rw-rw-rw-  1 vscode root 1070 Apr 10 19:09 LICENSE
+-rw-rw-rw-  1 vscode root  742 Apr 10 19:09 metadata.tsv
+-rw-rw-rw-  1 vscode root    2 Apr 10 19:09 notebook.ipynb
+-rw-rw-rw-  1 vscode root 3191 Apr 10 19:09 README.md
+drwxrwxrwx+ 2 vscode root 4096 Apr 10 19:09 slides/
+(base) @MVFran ➜ /workspaces/biotaller2025 (main) $ datasets --help
+datasets is a command-line tool that is used to query and download biological sequence data
+across all domains of life from NCBI databases.
+
+Refer to NCBI's [download and install](https://www.ncbi.nlm.nih.gov/datasets/docs/v2/download-and-install/) documentation for information about getting started with the command-line tools.
+
+Usage
+  datasets [command]
+
+Data Retrieval Commands
+  summary     Print a data report containing gene, genome, taxonomy or virus metadata
+  download    Download a gene, genome or virus dataset as a zip file
+  rehydrate   Rehydrate a downloaded, dehydrated dataset
+
+Miscellaneous Commands
+  completion  Generate autocompletion scripts
+
+Flags
+      --api-key string   Specify an NCBI API key
+      --debug            Emit debugging info
+      --help             Print detailed help about a datasets command
+      --version          Print version of datasets
+
+Use datasets <command> --help for detailed help about a command.
+(base) @MVFran ➜ /workspaces/biotaller2025 (main) $ datasets download genome --help
+
+Download a genome data package. Genome data packages may include genome, transcript and protein sequences, annotation and one or more data reports. Data packages are downloaded as a zip archive.
+
+The default genome data package includes the following files:
+  * <accession>_<assembly_name>_genomic.fna (genomic sequences)
+  * assembly_data_report.jsonl (data report with genome assembly and annotation metadata)
+  * dataset_catalog.json (a list of files and file types included in the data package)
+
+Usage
+  datasets download genome [flags]
+  datasets download genome [command]
+
+Sample Commands
+  datasets download genome accession GCF_000001405.40 --chromosomes X,Y --include genome,gff3,rna
+  datasets download genome taxon "bos taurus" --dehydrated
+  datasets download genome taxon human --assembly-level chromosome,complete --dehydrated
+  datasets download genome taxon mouse --search C57BL/6J --search "Broad Institute" --dehydrated
+
+Available Commands
+  accession   Download a genome data package by Assembly or BioProject accession
+  taxon       Download a genome data package by taxon (NCBI Taxonomy ID, scientific or common name at any tax rank)
+
+Flags
+      --annotated                 Limit to annotated genomes
+      --assembly-level string     Limit to genomes at one or more assembly levels (comma-separated):
+                                    * chromosome
+                                    * complete
+                                    * contig
+                                    * scaffold
+                                     (default "[]")
+      --assembly-source string    Limit to 'RefSeq' (GCF_) or 'GenBank' (GCA_) genomes (default "all")
+      --assembly-version string   Limit to 'latest' assembly accession version or include 'all' (latest + previous versions)
+      --chromosomes strings       Limit to a specified, comma-delimited list of chromosomes, or 'all' for all chromosomes
+      --dehydrated                Download a dehydrated zip archive including the data report and locations of data files (use the rehydrate command to retrieve data files).
+      --exclude-atypical          Exclude atypical assemblies
+      --exclude-multi-isolate     Exclude assemblies from multi-isolate projects
+      --fast-zip-validation       Skip zip checksum validation after download
+      --from-type                 Only return records with type material
+      --include string(,string)   Specify the data files to include (comma-separated).
+                                    * genome:     genomic sequence
+                                    * rna:        transcript
+                                    * protein:    amnio acid sequences
+                                    * cds:        nucleotide coding sequences
+                                    * gff3:       general feature file
+                                    * gtf:        gene transfer format
+                                    * gbff:       GenBank flat file
+                                    * seq-report: sequence report file
+                                    * none:       do not retrieve any sequence files
+                                     (default [genome])
+      --mag string                Limit to metagenome assembled genomes (only) or remove them from the results (exclude) (default "all")
+      --preview                   Show information about the requested data package
+      --reference                 Limit to reference genomes
+      --released-after string     Limit to genomes released on or after a specified date (free format, ISO 8601 YYYY-MM-DD recommended)
+      --released-before string    Limit to genomes released on or before a specified date (free format, ISO 8601 YYYY-MM-DD recommended)
+      --search strings            Limit results to genomes with specified text in the searchable fields:
+                                  species and infraspecies, assembly name and submitter.
+                                  To search multiple strings, use the flag multiple times.
+
+
+Global Flags
+      --api-key string    Specify an NCBI API key
+      --debug             Emit debugging info
+      --filename string   Specify a custom file name for the downloaded data package (default "ncbi_dataset.zip")
+      --help              Print detailed help about a datasets command
+      --no-progressbar    Hide progress bar
+      --version           Print version of datasets
+
+Use datasets download genome <command> --help for detailed help about a command.
+(base) @MVFran ➜ /workspaces/biotaller2025 (main) $ datasets download genome taxon "Mycoplasma genitalium"
+^[[D^[[CNew version of client (17.3.0) available at https://ftp.ncbi.nlm.nih.gov/pub/datasets/command-line/LATEST/linux-amd64/datasets.
+Collecting 24 genome records [================================================] 100% 24/24
+Downloading: ncbi_dataset.zip    3.99MB valid data package
+Validating package files [================================================] 100% 28/28
+(base) @MVFran ➜ /workspaces/biotaller2025 (main) $ mkdir data~
+(base) @MVFran ➜ /workspaces/biotaller2025 (main) $ unzip -d data/ncbi ncbi_dataset.zip
+Archive:  ncbi_dataset.zip
+checkdir:  cannot create extraction directory: data/ncbi
+           No such file or directory
+(base) @MVFran ➜ /workspaces/biotaller2025 (main) $ unzip -d data/ncbi ncbi_dataset.zip
+Archive:  ncbi_dataset.zip
+  inflating: data/ncbi/README.md     
+  inflating: data/ncbi/ncbi_dataset/data/assembly_data_report.jsonl  
+  inflating: data/ncbi/ncbi_dataset/data/GCA_000027325.1/GCA_000027325.1_ASM2732v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCA_000167595.1/GCA_000167595.1_ASM16759v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCA_000292405.1/GCA_000292405.1_ASM29240v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCA_000292445.1/GCA_000292445.1_ASM29244v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCA_000292485.1/GCA_000292485.1_ASM29248v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCA_000292505.1/GCA_000292505.1_ASM29250v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCA_036689675.1/GCA_036689675.1_ASM3668967v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCA_036689695.1/GCA_036689695.1_ASM3668969v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCA_036689745.1/GCA_036689745.1_ASM3668974v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCA_036784995.1/GCA_036784995.1_UAB_MGen_75956_1.1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCA_036785455.1/GCA_036785455.1_UAB_MGen_73697_1.1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCA_040556925.1/GCA_040556925.1_ASM4055692v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCF_000027325.1/GCF_000027325.1_ASM2732v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCF_000167595.1/GCF_000167595.1_ASM16759v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCF_000292405.1/GCF_000292405.1_ASM29240v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCF_000292445.1/GCF_000292445.1_ASM29244v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCF_000292485.1/GCF_000292485.1_ASM29248v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCF_000292505.1/GCF_000292505.1_ASM29250v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCF_036689675.1/GCF_036689675.1_ASM3668967v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCF_036689695.1/GCF_036689695.1_ASM3668969v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCF_036689745.1/GCF_036689745.1_ASM3668974v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCF_036784995.1/GCF_036784995.1_UAB_MGen_75956_1.1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCF_036785455.1/GCF_036785455.1_UAB_MGen_73697_1.1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/GCF_040556925.1/GCF_040556925.1_ASM4055692v1_genomic.fna  
+  inflating: data/ncbi/ncbi_dataset/data/dataset_catalog.json  
+  inflating: data/ncbi/md5sum.txt    
